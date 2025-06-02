@@ -31,6 +31,22 @@ void TestSeqList1(){
     SeqListPopFront(&s);
 
     SeqListPrint(&s);
+
+    SeqListInsert(&s, 5, 0);
+
+    SeqListPrint(&s);
+
+    SeqListErase(&s, 5);
+
+    SeqListPrint(&s);
+
+    int ret = SeqListFind(&s, 5);
+    if(ret != -1){
+        SeqListErase(&s, ret);
+    }
+
+    SeqListPrint(&s);
+
     
 
 }
@@ -40,3 +56,4 @@ int main(){
     TestSeqList1();
     return 0;
 }
+

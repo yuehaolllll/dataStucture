@@ -12,6 +12,14 @@ void SeqListInit(SeqList* ps)
     ps->capacity = 4;
 }
 
+void SeqListDestroy(SeqList* ps)
+{
+
+    free(ps);
+    ps->_a = NULL;
+
+}
+
 void SeqListPrint(SeqList* ps)
 {
 
@@ -44,56 +52,115 @@ void SeqListCheckCapacity(SeqList* ps)
 void SeqListPushBack(SeqList* ps, SLDataType e)
 {
 
-    assert(ps);
+    // assert(ps);
 
-    SeqListCheckCapacity(ps);
+    // SeqListCheckCapacity(ps);
 
-    ps->_a[ps->size] = e;
-    ps->size++;
+    // ps->_a[ps->size] = e;
+    // ps->size++;
+
+    SeqListInsert(ps, ps->size, e);
 
 }          
 
 void SeqListPopBack(SeqList* ps)
 {
 
-    assert(ps);
+    // assert(ps);
     
-    //ps->_a[ps->size-1] = 0;    // actually, this code is useless
-    ps->size--;
+    // //ps->_a[ps->size-1] = 0;    // actually, this code is useless
+    // ps->size--;
+
+    SeqListErase(ps, ps->size-1);
 
 }   
 
 void SeqListPushFront(SeqList* ps, SLDataType e)
 {
 
-    assert(ps);
+    // assert(ps);
 
-    SeqListCheckCapacity(ps);
+    // SeqListCheckCapacity(ps);
     
-    int end = ps->size - 1;
-    while(end >= 0){
-        ps->_a[end + 1] = ps->_a[end];
-        --end;
-    }
+    // int end = ps->size - 1;
+    // while(end >= 0){
+    //     ps->_a[end + 1] = ps->_a[end];
+    //     --end;
+    // }
 
-    ps->_a[0] = e;
-    ps->size++;
+    // ps->_a[0] = e;
+    // ps->size++;
+
+    SeqListInsert(ps, 0, e);
 
 }
 
 void SeqListPopFront(SeqList* ps)
 {
 
+    // assert(ps);
+    // for(int i = 0; i < ps->size-1; i++){
+    //     ps->_a[i] = ps->_a[i+1];
+    // }
+
+    // ps->size--;
+
+    SeqListErase(ps, 0);
+
+}   
+
+void SeqListInsert(SeqList* ps, int pos, SLDataType e)
+{
+
     assert(ps);
-    for(int i = 0; i < ps->size-1; i++){
-        ps->_a[i] = ps->_a[i+1];
+    assert(pos <= ps->size && pos >= 0);
+
+    SeqListCheckCapacity(ps);
+
+    int end = ps->size - 1;
+    while(end >= pos){
+        ps->_a[end+1] = ps->_a[end];
+        end--;
+    }
+
+    ps->_a[pos] = e;
+    ps->size++;
+
+}
+
+void SeqListErase(SeqList* ps, int pos)
+{
+
+    assert(ps);
+    assert(pos <= ps->size && pos >= 0);
+
+    int start = pos;
+    while(start < ps->size){
+        ps->_a[start] = ps->_a[start+1];
+        start++;
     }
 
     ps->size--;
 
-}   
+}
 
-void SeqListInsert(SeqList* ps, int pos, SLDataType e);   
-void SeqListErase(SeqList* ps, int pos);   
+int SeqListFind(SeqList* ps, SLDataType e)
+{
+
+    assert(ps);
+
+    int i = 0;
+    while(i < ps->size){
+        if(ps->_a[i] == e){
+            return i;
+        }else{
+            i++;
+        }
+    }
+
+    return -1;
+
+}
+
 
 
