@@ -4,6 +4,8 @@
 /*
 // practice 1: 原地移除数组中的元素。要求O(N)
 //解题思路：定义两个起始点（src、dst），当src遇到要去除的数时，src++，反之将src指向的数赋给dst指向的位置，然后src、dst均自增
+
+#include <stdio.h>
 int removeElement(int* nums, int numSize, int val){
 
     int src = 0;
@@ -44,6 +46,8 @@ int main()
 
 /*
 //practice 2：给定一个有序数组，去除数组中的重复元素。要求O(1).
+
+#include <stdio.h>
 int removeDuplicaties(int* nums, int numSize){
 
     int prev = 0;
@@ -83,6 +87,11 @@ int main(){
 }
 
 */
+
+
+/*
+//practice 3: 数组与数字的相加
+
 #include <stdio.h>
 #include <stdlib.h>
 int* addToArrayForm(int* A, int ASize, int K, int* returnSize){
@@ -168,5 +177,136 @@ int main(){
     return 0;
 
 }
+*/
+
+
+/*
+//practice 3: 合并两个有序数组
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void merge(int* nums1, int nums1Size, int m, int* nums2, int nums2Size, int n){
+
+    // 1.开辟一个大小为m+n的空间
+    int* nums3 = (int*)malloc(sizeof(int)*(m+n));
+
+    // 2.比较nums1和nums2中的各个元素，存入nums3
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    while(i < m && j < n){
+        if(nums1[i] < nums2[j]){
+            nums3[k] = nums1[i];
+            i++;
+            k++;
+        }else{
+            nums3[k] = nums2[j];
+            j++;
+            k++;
+        }
+    }
+    while(i < m){
+        nums3[k] = nums1[i];
+        i++;
+        k++;
+    }
+    while(j < n){
+        nums3[k] = nums2[j];
+        j++;
+        k++;
+    }
+
+    // 3.将nums3中的元素移入nums1中
+    memcpy(nums1, nums3, sizeof(int)*(m+n));
+    free(nums3);
+
+
+}
+
+int main(){
+
+    int arr1[11] = {1,1,2,2,4,6,7,0,0,0,0};
+    int arr2[6] = {3,4,5,6,0,0};
+    int sz1 = sizeof(arr1)/sizeof(arr1[0]);
+    int sz2 = sizeof(arr2)/sizeof(arr2[0]);
+    merge(arr1, 11, 7, arr2, 6, 4);
+    for(int i = 0; i < 11; i++){
+        printf("%d ", arr1[i]);
+    }
+    return 0;
+
+}
+*/
+
+
+// practice 4: 旋转数组
+
+#include <stdio.h>
+
+void rotate(int* nums, int numSize, int k){
+
+    // 1.判断旋转多少个
+    if(k >= numSize){
+        k %= numSize;
+    }
+
+    // 2.逆序前numSize - k个
+    int left1 = 0;
+    int right1 = numSize - k - 1;
+    while(left1 < right1){
+        int tmp = nums[left1];
+        nums[left1] = nums[right1];
+        nums[right1] = tmp;
+        left1++;
+        right1--;
+    }
+
+    // 3.逆序后k个
+    int left2 = numSize - k;
+    int right2 = numSize - 1;
+    while(left2 < right2){
+        int tmp = nums[left2];
+        nums[left2] = nums[right2];
+        nums[right2] = tmp;
+        left2++;
+        right2--;
+    }
+
+    // 4.逆序整个nums数组
+    int left = 0;
+    int right = numSize - 1;
+    while(left < right){
+        int tmp = nums[left];
+        nums[left] = nums[right];
+        nums[right] = tmp;
+        left++;
+        right--;
+    }
+
+}
+
+
+int main(){
+
+    int arr[] = {1,2,3,4,5,6,7,8};
+    int sz = sizeof(arr)/sizeof(arr[0]);
+    rotate(arr, sz, 3);
+
+    for(int i = 0; i < sz; i++){
+        printf("%d ", arr[i]);
+    }
+
+    return 0;
+
+}
+
+
+
+
+
+
+
 
 
