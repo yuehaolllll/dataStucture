@@ -241,6 +241,7 @@ int main(){
 */
 
 
+/*
 // practice 4: 旋转数组
 
 #include <stdio.h>
@@ -301,7 +302,110 @@ int main(){
     return 0;
 
 }
+*/
 
+
+// practice: 单链表删除指定值
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct ListNode
+{
+    int val;
+    struct ListNode* next;
+};
+
+struct ListNode* removeElement(struct ListNode* head, int val){
+
+    struct ListNode* cur = head;
+    struct ListNode* prev = NULL;
+
+    while(cur != NULL){
+
+        if(cur->val == val){      // 进行删除
+
+            if(cur == head){
+                head = cur->next;
+                free(cur);
+                cur = head;
+            }else{               // 找到前一个
+
+                prev->next = cur->next;
+                free(cur);
+                cur = prev->next;
+
+            }
+
+        }else{
+
+            prev = cur;
+            cur = cur->next;
+
+        }
+
+    }
+
+    return head;
+
+}
+
+
+void ListNodePushBack(struct ListNode** pphead, int x){
+
+    // 新建节点
+    struct ListNode* newnode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    newnode->val = x;
+    newnode->next = NULL;
+
+    // 如果链表为空
+    if(*pphead == NULL){
+        *pphead = newnode;
+    }else{
+        struct ListNode* tail = *pphead;
+        while(tail->next != NULL){
+            tail = tail->next;
+        }
+        tail->next = newnode;
+    }
+
+
+}
+
+void ListNodePrint(struct ListNode* phead){
+
+    struct ListNode* node = phead;
+    while(node != NULL){
+        printf("%d ", node->val);
+        node = node->next;
+    }
+    printf("\n");
+
+}
+
+void Test(){
+
+    struct ListNode* plist = NULL;
+
+    ListNodePushBack(&plist, 1);
+    ListNodePushBack(&plist, 3);
+    ListNodePushBack(&plist, 1);
+    ListNodePushBack(&plist, 3);
+    ListNodePushBack(&plist, 1);
+
+    ListNodePrint(plist);
+    struct ListNode* ret = removeElement(plist, 2);
+    ListNodePrint(ret);
+
+}
+
+int main()
+{
+
+    Test();
+    return 0;
+
+}
 
 
 
