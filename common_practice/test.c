@@ -323,27 +323,21 @@ struct ListNode* removeElement(struct ListNode* head, int val){
 
     while(cur != NULL){
 
-        if(cur->val == val){      // 进行删除
+        if(cur->val == val){
 
             if(cur == head){
                 head = cur->next;
                 free(cur);
                 cur = head;
-            }else{               // 找到前一个
-
+            }else{
                 prev->next = cur->next;
                 free(cur);
                 cur = prev->next;
-
             }
-
         }else{
-
             prev = cur;
             cur = cur->next;
-
         }
-
     }
 
     return head;
@@ -353,22 +347,23 @@ struct ListNode* removeElement(struct ListNode* head, int val){
 
 void ListNodePushBack(struct ListNode** pphead, int x){
 
-    // 新建节点
+    // 创建新节点
     struct ListNode* newnode = (struct ListNode*)malloc(sizeof(struct ListNode));
     newnode->val = x;
     newnode->next = NULL;
 
-    // 如果链表为空
+    // 如果原链表为空
     if(*pphead == NULL){
         *pphead = newnode;
     }else{
+        // 找到链表尾部
         struct ListNode* tail = *pphead;
         while(tail->next != NULL){
             tail = tail->next;
         }
         tail->next = newnode;
     }
-
+    
 
 }
 
@@ -386,15 +381,15 @@ void ListNodePrint(struct ListNode* phead){
 void Test(){
 
     struct ListNode* plist = NULL;
-
     ListNodePushBack(&plist, 1);
-    ListNodePushBack(&plist, 3);
+    ListNodePushBack(&plist, 2);
     ListNodePushBack(&plist, 1);
-    ListNodePushBack(&plist, 3);
     ListNodePushBack(&plist, 1);
 
     ListNodePrint(plist);
-    struct ListNode* ret = removeElement(plist, 2);
+
+    struct ListNode* ret = removeElement(plist, 1);
+
     ListNodePrint(ret);
 
 }
