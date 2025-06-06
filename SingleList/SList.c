@@ -32,6 +32,12 @@ void SLTPrint(SLTNode* phead){
 
 void SLTPushBack(SLTNode** pphead, SLTDataType x){
 
+    assert(pphead);
+    if(pphead == NULL){
+        perror("SLTPushBack:");
+        return;
+    }
+
     // 创建新增节点及赋值
     SLTNode* newnode = ButListNode(x);
 
@@ -51,6 +57,12 @@ void SLTPushBack(SLTNode** pphead, SLTDataType x){
 }
 
 void SLTPopBack(SLTNode** pphead){
+
+    assert(pphead);
+    if(pphead == NULL){
+        perror("SLTPopBack:");
+        return;
+    }
 
     // 如果链表为空
     if((*pphead) == NULL)
@@ -77,6 +89,12 @@ void SLTPopBack(SLTNode** pphead){
 
 void SLTPushFront(SLTNode** pphead, SLTDataType x){
 
+    assert(pphead);
+    if(pphead == NULL){
+        perror("SLTPushFront");
+        return;
+    }
+
     // 新建节点
     SLTNode* newnode = ButListNode(x);
 
@@ -88,6 +106,12 @@ void SLTPushFront(SLTNode** pphead, SLTDataType x){
 }
 
 void SLTPopFront(SLTNode** pphead){
+
+    assert(pphead);
+    if(pphead == NULL){
+        perror("SLTPushFront");
+        return;
+    }
 
     if(*pphead == NULL){
         return;
@@ -117,6 +141,12 @@ SLTNode* SLTFind(SLTNode* phead, SLTDataType x){
 
 void SLTInsert(SLTNode** pphead, SLTNode* pos, SLTDataType x){
 
+    assert(pphead);
+    if(pphead == NULL){
+        perror("SLTPushFront");
+        return;
+    }
+
     // 创建新节点
     SLTNode* newnode = ButListNode(x);
 
@@ -137,5 +167,82 @@ void SLTInsert(SLTNode** pphead, SLTNode* pos, SLTDataType x){
         newnode->next = pos;
 
     }
+
+}
+
+void SLTInsertAfter(SLTNode** pphead, SLTNode* pos, SLTDataType x){
+
+    assert(pphead);
+    if(pphead == NULL){
+        perror("SLTPushFront");
+        return;
+    }
+
+    // 创建新节点
+    SLTNode* newnode = ButListNode(x);
+
+    newnode->next = pos->next;
+    pos->next = newnode;
+
+}
+
+void SLTErase(SLTNode** pphead, SLTNode* pos){
+
+    assert(pphead);
+    if(pphead == NULL){
+        perror("SLTPushFront");
+        return;
+    }
+
+    SLTNode* prev = *pphead;
+
+    if(pos == *pphead){
+        *pphead = pos->next;
+        free(pos);
+    }else{
+
+        while(prev->next != pos){
+            prev = prev->next;
+        }
+
+        prev->next = pos->next;
+        free(pos);
+
+    }
+
+}
+
+void SLTEraseAfter(SLTNode** pphead, SLTNode* pos){
+
+    assert(pphead);
+    if(pphead == NULL){
+        perror("SLTPushFront");
+        return;
+    }
+
+    SLTNode* next = pos->next;
+    pos->next = next->next;
+    free(next);
+
+}
+
+void SLTDestroy(SLTNode** pphead){
+
+    assert(pphead);
+    if(pphead == NULL){
+        perror("SLTPushFront");
+        return;
+    }
+
+    SLTNode* cur = *pphead;
+
+    while(cur != NULL){
+
+        SLTNode* next = cur->next;
+        free(cur);
+        cur = next;
+
+    }
+    *pphead = NULL;
 
 }

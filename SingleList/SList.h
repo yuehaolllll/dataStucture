@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
+#include <assert.h>
 
 typedef int SLTDataType;
 
@@ -20,6 +22,9 @@ void SLTPushFront(SLTNode** pphead, SLTDataType x);
 void SLTPopFront(SLTNode** pphead);
 SLTNode* SLTFind(SLTNode* phead, SLTDataType x);
 void SLTInsert(SLTNode** pphead, SLTNode* pos, SLTDataType x);
+void SLTInsertAfter(SLTNode** pphead, SLTNode* pos, SLTDataType x);
 void SLTErase(SLTNode** pphead, SLTNode* pos);
+void SLTEraseAfter(SLTNode** pphead, SLTNode* pos);
 void SLTDestroy(SLTNode** pphead);
+
 

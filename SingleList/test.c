@@ -40,7 +40,25 @@ void TestFunction(){
         SLTInsert(&plist, pos1, 20);
     }
     SLTPrint(plist);
+
+    // 后插
+    SLTNode* pos2 = SLTFind(plist, 2);
+    SLTInsertAfter(&plist, pos2, 20);
+    SLTPrint(plist);
+
+    // 清除当前
+    SLTNode* pos3 = SLTFind(plist, 3);
+    SLTErase(&plist, pos3);
+    SLTPrint(plist);
+
+    // 清除之后
+    SLTNode* pos4 = SLTFind(plist, 2);
+    SLTEraseAfter(&plist, pos4);
+    SLTPrint(plist);
     
+    // 销毁单链表
+    SLTDestroy(&plist);
+    SLTPrint(plist);
 
 }
 
