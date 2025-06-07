@@ -305,7 +305,8 @@ int main(){
 */
 
 
-// practice: 单链表删除指定值
+/*
+// practice 5: 单链表删除指定值
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -401,10 +402,135 @@ int main()
     return 0;
 
 }
+*/
 
 
+// practice 6: 翻转链表
 
+#include <stdio.h>
+#include <stdlib.h>
 
+struct ListNode
+{
+    int val;
+    struct ListNode* next;
+};
+
+struct ListNode* reverseList_PushFront(struct ListNode* head){
+
+    if(head == NULL){
+        return NULL;
+    }
+
+    struct ListNode* newHead = NULL;
+    struct ListNode* node = head;
+    struct ListNode* next = head->next;
+    
+    while(node != NULL){
+
+        node->next = newHead;
+        newHead = node;
+        node = next;
+        if(next != NULL){
+            next = next->next;
+        }
+        
+    }
+
+    return newHead;
+
+}
+
+struct ListNode* reverseList(struct ListNode* head){
+
+    // 如果链表为空
+    if(head == NULL){
+        return NULL;
+    }
+
+    // 创建节点索引
+    struct ListNode* n1 = NULL;
+    struct ListNode* n2 = head;
+    struct ListNode* n3 = head->next;
+
+    // 翻转链表
+    while(n2 != NULL){
+
+        // 翻转
+        n2->next = n1;
+
+        // 迭代链表
+        n1 = n2;
+        n2 = n3;
+        if(n3 != NULL){
+            n3 = n3->next;
+        }
+
+    }
+
+    return n1;
+
+}
+
+void ListNodePushBack(struct ListNode** pphead, int x){
+
+    // 创建新节点
+    struct ListNode* newnode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    newnode->val = x;
+    newnode->next = NULL;
+
+    // 如果原链表为空
+    if(*pphead == NULL){
+        *pphead = newnode;
+    }else{
+        // 找到链表尾部
+        struct ListNode* tail = *pphead;
+        while(tail->next != NULL){
+            tail = tail->next;
+        }
+        tail->next = newnode;
+    }
+    
+
+}
+
+void ListNodePrint(struct ListNode* phead){
+
+    struct ListNode* node = phead;
+    while(node != NULL){
+        printf("%d ", node->val);
+        node = node->next;
+    }
+    printf("\n");
+
+}
+
+void Test(){
+
+    struct ListNode* plist = NULL;
+    ListNodePushBack(&plist, 1);
+    ListNodePushBack(&plist, 2);
+    ListNodePushBack(&plist, 3);
+    ListNodePushBack(&plist, 4);
+
+    ListNodePrint(plist);
+
+    struct ListNode* ret = reverseList(plist);
+
+    ListNodePrint(ret);
+
+    struct ListNode* ret1 = reverseList_PushFront(ret);
+    ListNodePrint(ret1);
+
+}
+
+int main()
+{
+
+    Test();
+    return 0;
+
+}
 
 
 
