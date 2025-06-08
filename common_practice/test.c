@@ -405,7 +405,7 @@ int main()
 */
 
 
-// practice 6: 翻转链表
+// practice 6
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -416,6 +416,98 @@ struct ListNode
     struct ListNode* next;
 };
 
+
+// 合并两个链表
+struct ListNode* mergeList(struct ListNode* l1, struct ListNode* l2){
+
+    if(l1 == NULL){
+        return l2;
+    }
+
+    struct ListNode* head = NULL;
+    struct ListNode* tail = NULL;
+
+    while(l1 != NULL && l2 != NULL){
+        if(l1->val < l2->val){
+
+            if(head == NULL){
+                head = tail = l1;
+            }else{
+                tail->next = l1;
+                tail = tail->next;
+            }
+            l1 = l1->next;
+            
+        }else{
+            if(head == NULL){
+                head = tail = l2;
+            }else{
+                tail->next = l2;
+                tail = tail->next;
+            }
+            l2 = l2->next;
+        }
+    }
+
+    if(l1 != NULL){
+        tail->next = l1;
+    }
+
+    if(l2 != NULL){
+        tail->next = l2;
+    }
+
+    return head;
+
+}
+
+// 寻找链表的倒数第k个节点
+struct ListNode* kNode(struct ListNode* head, int k){
+
+    struct ListNode* fast = head;
+    struct ListNode* slow = head;
+
+    while(k){
+        if(fast != NULL){
+            fast = fast->next;
+            k--;
+        }else{
+            return NULL;
+        }
+        
+    }
+
+    while(fast != NULL){
+
+        fast = fast->next;
+        slow = slow->next;
+
+    }
+
+    return slow;
+
+}
+
+// 寻找链表的中间节点（如果为偶数个则返回第二个）
+struct ListNode* middleNode(struct ListNode* head){
+
+    // 方法：快慢指针
+    struct ListNode* slow = head;
+    struct ListNode* fast = head;
+
+    while(fast != NULL && fast->next != NULL){
+
+        slow = slow->next;
+        fast = fast->next->next;
+
+    }
+
+    return slow;
+
+}
+
+
+// 翻转链表
 struct ListNode* reverseList_PushFront(struct ListNode* head){
 
     if(head == NULL){
@@ -507,20 +599,21 @@ void ListNodePrint(struct ListNode* phead){
 
 void Test(){
 
-    struct ListNode* plist = NULL;
-    ListNodePushBack(&plist, 1);
-    ListNodePushBack(&plist, 2);
-    ListNodePushBack(&plist, 3);
-    ListNodePushBack(&plist, 4);
+    struct ListNode* plist1 = NULL;
+    ListNodePushBack(&plist1, 1);
+    ListNodePushBack(&plist1, 2);
+    ListNodePushBack(&plist1, 5);
+    ListNodePushBack(&plist1, 8);
 
-    ListNodePrint(plist);
+    struct ListNode* plist2 = NULL;
+    ListNodePushBack(&plist2, 2);
+    ListNodePushBack(&plist2, 2);
+    ListNodePushBack(&plist2, 5);
+    ListNodePushBack(&plist2, 9);
 
-    struct ListNode* ret = reverseList(plist);
+    struct ListNode* ret = mergeList(plist1, plist2);
 
     ListNodePrint(ret);
-
-    struct ListNode* ret1 = reverseList_PushFront(ret);
-    ListNodePrint(ret1);
 
 }
 
