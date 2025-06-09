@@ -409,6 +409,7 @@ int main()
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 struct ListNode
 {
@@ -416,6 +417,47 @@ struct ListNode
     struct ListNode* next;
 };
 
+// 判断链表是否为回文结构
+bool checkPalindrome(struct ListNode* list){
+
+    // 快慢指针法找到链表的中间节点
+    struct ListNode* fast = list;
+    struct ListNode* slow = list;
+
+    while(fast != NULL && fast->next != NULL){
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+
+    // slow即为现在的中间节点，再进行链表翻转
+    struct ListNode* cur = slow;
+    struct ListNode* newHead = NULL;
+    struct ListNode* next = slow->next;
+
+    while(cur != NULL){
+        cur->next = newHead;
+        newHead = cur;
+        cur = next;
+        if(next != NULL){
+            next = next->next;
+        }
+    }
+
+    // 现在newHead为反转后链表的头节点,对比两个链表
+    while(list != NULL && newHead != NULL){
+
+        if(list->val != newHead->val){
+            return false;
+        }
+
+        list = list->next;
+        newHead = newHead->next;
+    }
+
+    return true;
+
+
+}
 
 // 链表的分割
 struct ListNode* partitionList(struct ListNode* list, int x){
@@ -646,20 +688,21 @@ void ListNodePrint(struct ListNode* phead){
 void Test(){
 
     struct ListNode* plist = NULL;
-    ListNodePushBack(&plist, 2);
-    ListNodePushBack(&plist, 5);
-    ListNodePushBack(&plist, 8);
     ListNodePushBack(&plist, 1);
     ListNodePushBack(&plist, 2);
     ListNodePushBack(&plist, 3);
     ListNodePushBack(&plist, 4);
+    ListNodePushBack(&plist, 5);
+    ListNodePushBack(&plist, 4);
+    ListNodePushBack(&plist, 3);
     ListNodePushBack(&plist, 2);
-    ListNodePushBack(&plist, 0);
+    ListNodePushBack(&plist, 2);
 
     ListNodePrint(plist);
 
-    struct ListNode* ret = partitionList(plist, 4);
-    ListNodePrint(ret);
+    bool ret = checkPalindrome(plist);
+    printf("%d\n", ret);
+    
 
 }
 
