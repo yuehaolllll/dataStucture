@@ -417,6 +417,50 @@ struct ListNode
 };
 
 
+// 链表的分割
+struct ListNode* partitionList(struct ListNode* list, int x){
+
+    struct ListNode* cur = list;
+    struct ListNode* head1 = NULL;
+    struct ListNode* tail1 = NULL;
+    struct ListNode* head2 = NULL;
+    struct ListNode* tail2 = NULL;
+
+    while(cur != NULL){
+
+        // 小于x的部分
+        if(cur->val < x){
+
+            if(head1 == NULL){
+                head1 = tail1 = cur;
+            }else{
+                tail1->next = cur;
+                tail1 = tail1->next;
+            }
+
+        }else{     // 大于x的部分
+
+            if(head2 == NULL){
+                head2 = tail2 = cur;
+            }else{
+                tail2->next = cur;
+                tail2 = tail2->next;
+            }
+
+        }
+
+        cur = cur->next;
+
+    }
+
+    tail2->next = NULL;
+    // 合并两个链表
+    tail1->next = head2;
+
+    return head1;
+
+}
+
 // 合并两个链表
 struct ListNode* mergeList(struct ListNode* l1, struct ListNode* l2){
 
@@ -426,6 +470,7 @@ struct ListNode* mergeList(struct ListNode* l1, struct ListNode* l2){
 
     struct ListNode* head = NULL;
     struct ListNode* tail = NULL;
+
 
     while(l1 != NULL && l2 != NULL){
         if(l1->val < l2->val){
@@ -456,6 +501,7 @@ struct ListNode* mergeList(struct ListNode* l1, struct ListNode* l2){
     if(l2 != NULL){
         tail->next = l2;
     }
+
 
     return head;
 
@@ -599,20 +645,20 @@ void ListNodePrint(struct ListNode* phead){
 
 void Test(){
 
-    struct ListNode* plist1 = NULL;
-    ListNodePushBack(&plist1, 1);
-    ListNodePushBack(&plist1, 2);
-    ListNodePushBack(&plist1, 5);
-    ListNodePushBack(&plist1, 8);
+    struct ListNode* plist = NULL;
+    ListNodePushBack(&plist, 2);
+    ListNodePushBack(&plist, 5);
+    ListNodePushBack(&plist, 8);
+    ListNodePushBack(&plist, 1);
+    ListNodePushBack(&plist, 2);
+    ListNodePushBack(&plist, 3);
+    ListNodePushBack(&plist, 4);
+    ListNodePushBack(&plist, 2);
+    ListNodePushBack(&plist, 0);
 
-    struct ListNode* plist2 = NULL;
-    ListNodePushBack(&plist2, 2);
-    ListNodePushBack(&plist2, 2);
-    ListNodePushBack(&plist2, 5);
-    ListNodePushBack(&plist2, 9);
+    ListNodePrint(plist);
 
-    struct ListNode* ret = mergeList(plist1, plist2);
-
+    struct ListNode* ret = partitionList(plist, 4);
     ListNodePrint(ret);
 
 }
