@@ -417,6 +417,34 @@ struct ListNode
     struct ListNode* next;
 };
 
+// 判断是否为回环链表并返回入环点
+struct ListNode* checkCircular(struct ListNode* phead){
+
+    // 快慢指针法
+    struct ListNode* fast = phead;
+    struct ListNode* slow = phead;
+
+     while(fast != NULL && fast->next != NULL){
+        fast = fast->next->next;
+        slow = slow->next;
+
+        if(slow == fast){
+            // 相遇点
+            struct ListNode* meet = slow;
+            while(meet != phead){
+                meet = meet->next;
+                phead = phead->next;
+            }
+
+            return meet;
+        }
+    
+     }
+
+     return NULL;
+
+}
+
 // 相交链表
 struct ListNode* intersectList(struct ListNode* Head1, struct ListNode* Head2){
 
