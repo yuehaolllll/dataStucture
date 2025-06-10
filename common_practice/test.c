@@ -417,6 +417,53 @@ struct ListNode
     struct ListNode* next;
 };
 
+// 相交链表
+struct ListNode* intersectList(struct ListNode* Head1, struct ListNode* Head2){
+
+    struct ListNode* l1 = Head1;
+    struct ListNode* l2 = Head2;
+    int len1 = 0;
+    int len2 = 0;
+    // 判断是否是相交链表，不是则返回NULL
+    while(l1->next != NULL){
+        len1++;
+        l1 = l1->next;
+    }
+
+    while(l2->next != NULL){
+        len2++;
+        l2 = l2->next;
+    }
+    
+    if(l1 != l2){
+        return NULL;
+    }
+
+    // 找出两链表长度差
+    int gap = abs(len1,len2);
+
+    struct ListNode* longList = Head1;
+    struct ListNode* shortList = Head2;
+
+    if(len1 < len2){
+        longList = Head2;
+        shortList = Head1;
+    }
+
+    // 长链表先走差距步
+    while(gap--){
+        longList = longList->next;
+    }
+
+    // 找到相交节点
+    while(longList != shortList){
+        longList = longList->next;
+        shortList = shortList->next;
+    }
+    return longList;
+
+}
+
 // 判断链表是否为回文结构
 bool checkPalindrome(struct ListNode* list){
 
