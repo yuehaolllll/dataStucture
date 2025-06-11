@@ -405,6 +405,7 @@ int main()
 */
 
 
+/*
 // practice 6
 
 #include <stdio.h>
@@ -786,6 +787,72 @@ int main()
 
     Test();
     return 0;
+
+}
+*/
+
+// practice: 复杂链表拷贝
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node 
+{
+    int value;
+    struct Node* next;
+    struct Node* random;
+};
+
+struct Node* copyNode(struct Node* head){
+
+    // 1、拷贝节点插入原节点后
+    struct Node* cur = head;
+    while(cur != NULL){
+        struct Node* copy = (struct Node*)malloc(sizeof(struct Node));
+
+        // 拷贝节点
+        copy->value = cur->value;
+        copy->next = cur->next;
+        cur->next = copy;
+
+        cur = copy->next;
+    }
+
+    // 2、拷贝random
+    cur = head;
+    while(cur != NULL){
+        struct Node* copy = cur->next;
+        if(cur->random == NULL){
+            copy->random = NULL;
+        }else{
+            copy->random = cur->random->next;
+        }
+
+        cur = cur->next->next;
+    }    
+
+    // 3、拆分拷贝链表
+    cur = head;
+    struct Node* copyHead = NULL;
+    struct Node* copyTail = NULL;
+    while(cur != NULL){
+        struct Node* copy = cur->next;
+        struct Node* next = copy->next;
+        // 链到下一个copy
+        if(copyHead == NULL){
+            copyHead = copyTail = copy;
+        }else{
+            
+            copyTail->next = copy;
+            copyTail = copy;
+            
+
+        }
+
+        cur->next = next;
+        cur = next;
+    } 
+
+    return copyHead;
 
 }
 
