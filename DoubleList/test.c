@@ -23,6 +23,17 @@ void Test(){
 
     ListPrint(plist);
 
+    ListNode* ret = ListFind(plist, 1);
+    printf("%d\n", ret->data);
+
+    ListNode* ret1 = ListFind(plist, 2);
+    ListInsert(ret1, -2);
+    ListPrint(plist);
+
+    ListNode* ret2 = ListFind(plist, -2);
+    ListErase(ret2);
+    ListPrint(plist);
+
 }
 
 int main()
