@@ -1,5 +1,11 @@
 #include "List.h"
 
+ListNode* BuyListNode(ListDataType x){
+
+    ListNode* node = (ListNode*)malloc(sizeof(ListNode));
+    node->data = x;
+
+}
 
 ListNode* ListInit(){
 
@@ -32,8 +38,7 @@ void ListPushBack(ListNode* phead, ListDataType x){
     assert(phead);
 
     // 开辟新节点
-    ListNode* newnode = (ListNode*)malloc(sizeof(ListNode));
-    newnode->data = x;
+    ListNode* newnode = BuyListNode(x);
     // 找到尾节点
     ListNode* tail = phead->prev;
 
@@ -71,8 +76,7 @@ void ListPushFront(ListNode* phead, ListDataType x){
     assert(phead);
 
     // 新建节点
-    ListNode* newnode = (ListNode*)malloc(sizeof(ListNode));
-    newnode->data = x;
+    ListNode* newnode = BuyListNode(x);
 
     // 找到第一个
     ListNode* first = phead->next;
