@@ -58,14 +58,15 @@ void ListPopBack(ListNode* phead){
     if(phead->next == phead){
         return;
     }else{
-        // 找到尾
-        ListNode* tail = phead->prev;
+        // // 找到尾
+        // ListNode* tail = phead->prev;
 
-        // 尾删即把tail的前一个与phead相连
-        phead->prev = tail->prev;
-        tail->prev->next = phead;
+        // // 尾删即把tail的前一个与phead相连
+        // phead->prev = tail->prev;
+        // tail->prev->next = phead;
 
-        free(tail);
+        // free(tail);
+        ListErase(phead->prev);
     }
 
     
@@ -98,14 +99,16 @@ void ListPopFront(ListNode* phead){
     if(phead->next == phead){
         return;
     }else{
-        // 找到第一个
-        ListNode* first = phead->next;
+        // // 找到第一个
+        // ListNode* first = phead->next;
 
-        // 头删
-        phead->next = first->next;
-        first->next->prev = phead;
+        // // 头删
+        // phead->next = first->next;
+        // first->next->prev = phead;
 
-        free(first);
+        // free(first);
+
+        ListErase(phead->next);
     }
 
 }
@@ -154,6 +157,23 @@ void ListErase(ListNode* pos){
     pos->next->prev = pos->prev;
 
     free(pos);
+
+}
+
+void ListDestroy(ListNode* phead){
+
+    assert(phead);
+
+    // 
+    ListNode* cur = phead->next;
+
+    while(cur != phead){
+        ListNode* next = cur->next;
+        free(cur);
+        cur = next;
+    }
+
+    free(phead);
 
 }
 

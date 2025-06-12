@@ -8,7 +8,6 @@ void Test(){
     ListPushBack(plist, 1);
     ListPushBack(plist, 2);
     ListPushBack(plist, 3);
-
     ListPrint(plist);            // 新链表： 1 2 3
 
     ListPopBack(plist);          // 尾删  ： 1 2
@@ -33,6 +32,9 @@ void Test(){
     ListNode* ret2 = ListFind(plist, -2);
     ListErase(ret2);
     ListPrint(plist);
+
+    ListDestroy(plist);
+    plist = NULL;
 
 }
 
