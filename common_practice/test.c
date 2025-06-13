@@ -791,6 +791,7 @@ int main()
 }
 */
 
+/*
 // practice: 复杂链表拷贝
 #include <stdio.h>
 #include <stdlib.h>
@@ -855,7 +856,142 @@ struct Node* copyNode(struct Node* head){
     return copyHead;
 
 }
+*/
 
+// practice 7: 栈的应用---括号的匹配
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <assert.h>
+
+typedef char STDataType;
+
+typedef struct Stack
+{
+    STDataType* data;
+    int top;
+    int capacity;
+}Stack;
+
+void StackInit(Stack* pst){
+
+    assert(pst);
+    pst->data = NULL;
+    pst->top = 0;
+    pst->capacity = 0;
+
+}
+
+void StackDestroy(Stack* pst){
+
+    assert(pst);
+    free(pst->data);
+    pst->data = NULL;
+    pst->capacity = pst->top = 0;
+
+}
+
+bool StackEmpty(Stack* pst){
+
+    assert(pst);
+
+    return pst->top == 0;
+
+}
+
+void StackPush(Stack* pst, STDataType x){
+
+    assert(pst);
+
+    if(pst->top == pst->capacity){
+        int newcapacity = pst->capacity == 0 ? 4 : pst->capacity * 2;
+        STDataType* tmp = (STDataType*)realloc(pst->data, sizeof(STDataType)*newcapacity);
+        if(tmp == NULL){
+            printf("realloc failed!\n");
+            exit(-1);
+        }
+        pst->data = tmp;
+    }
+
+    pst->data[pst->top] = x;
+    pst->top++;
+
+}
+
+void StackPop(Stack* pst){
+
+    assert(pst);
+    assert(pst->top > 0);
+
+    pst->top--;
+
+}
+
+STDataType StackTop(Stack* pst){
+
+    assert(pst);
+    assert(pst->top > 0);
+
+    return pst->data[pst->top-1];
+
+}
+
+
+bool isValid(char* s){
+
+    // 构建栈
+    Stack st;
+    StackInit(&st);
+
+    while(*s){
+        if(*s == '{' ||
+           *s == '[' ||
+           *s == '('
+          ){
+                // 入栈
+                StackPush(&st, *s);
+                s++;
+          }else{
+                // 取后进栈的
+                if(StackEmpty(&st)){
+                    return false;
+                }else{
+                    STDataType top = StackTop(&st);
+                    StackPop(&st);
+
+                    // 检查是否有不匹配的
+                    if((*s == '}' && top != '{' )||
+                       (*s == ']' && top != '[' )||
+                       (*s == ')' && top != '('  ) ){ 
+
+                        // 不匹配情况出现
+                        StackDestroy(&st);
+                        return false;
+
+                   }else{
+                        s++;
+                   }
+                }
+                
+                
+          }
+    }
+
+    // 检查栈中是否还有左括号未出
+    bool ret = StackEmpty(&st);    // 空则返回1， 非空返回0
+    StackDestroy(&st);
+    return ret;
+
+}
+
+int main(){
+
+    char s[] = ")";
+    bool ret = isValid(s);
+    printf("%d\n", ret);
+    return 0;
+
+}
 
 
 
