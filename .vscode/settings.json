@@ -4,7 +4,8 @@
         "stdlib.h": "c",
         "xstring": "c",
         "xutility": "c",
-        "assert.h": "c"
+        "assert.h": "c",
+        "vector": "c"
     },
     "C_Cpp.default.compilerPath": "F:/MinGW/bin/gcc.exe"
 }
