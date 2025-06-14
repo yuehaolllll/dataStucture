@@ -858,6 +858,7 @@ struct Node* copyNode(struct Node* head){
 }
 */
 
+/*
 // practice 7: 栈的应用---括号的匹配
 #include <stdio.h>
 #include <stdlib.h>
@@ -992,6 +993,224 @@ int main(){
     return 0;
 
 }
+*/
 
+
+// practice 8: 用队列实现栈
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <stdbool.h>
+
+typedef int QDataType;
+
+typedef struct QueueNode
+{
+    QDataType data;
+    struct QueueNode* next;
+}QueueNode;
+
+typedef struct Queue
+{
+    QueueNode* head;
+    QueueNode* tail;
+}Queue;
+
+void QueueInit(Queue* pq){
+
+    assert(pq);
+    pq->head = NULL;
+    pq->tail = NULL;
+
+}
+
+void QueueDestroy(Queue* pq){
+
+    assert(pq);
+
+    QueueNode* cur = pq->head;
+    while(cur != NULL){
+        QueueNode* next = cur->next;
+        free(cur);
+        cur = next;
+    }
+
+}
+
+bool QueueEmpty(Queue* pq){
+
+    assert(pq);
+
+    return pq->head == NULL;
+
+}
+
+void QueuePush(Queue* pq, QDataType x){
+
+    assert(pq);
+
+    QueueNode* newnode = (QueueNode*)malloc(sizeof(QueueNode));
+    newnode->data = x;
+    newnode->next = NULL;
+
+    if(pq->head == NULL){
+        pq->head = pq->tail = newnode;
+    }else{
+        pq->tail->next = newnode;
+        pq->tail = newnode;
+    }
+
+}
+
+void QueuePop(Queue* pq){
+
+    assert(pq);
+    assert(!QueueEmpty(pq));
+
+    QueueNode* newhead  = pq->head->next;
+    free(pq->head);
+    pq->head = newhead;
+
+}
+
+QDataType QueueFront(Queue* pq){
+
+    assert(pq);
+    assert(!QueueEmpty(pq));
+
+    return pq->head->data;
+
+}
+
+QDataType QueueBack(Queue* pq){
+
+    assert(pq);
+    assert(!QueueEmpty(pq));
+
+    return pq->tail->data;
+
+}
+
+int QueueSize(Queue* pq){
+
+    assert(pq);
+    assert(!QueueEmpty(pq));
+
+    int size = 0;
+    QueueNode* cur = pq->head;
+    while(cur != NULL){
+        size++;
+        cur = cur->next;
+    }
+
+    return size;
+
+}
+
+typedef struct
+{
+    Queue q1;
+    Queue q2;
+}MyStack;
+
+MyStack* myStackCreate(){
+
+    MyStack* st = (MyStack*)malloc(sizeof(MyStack));
+    QueueInit(&st->q1);
+    QueueInit(&st->q2);
+
+    return st;
+
+}
+
+void myStackPush(MyStack* obj, int x){
+
+    assert(obj);
+
+    if(!QueueEmpty(&obj->q1)){
+        QueuePush(&obj->q1, x);
+    }else{
+        QueuePush(&obj->q2, x);
+    }
+
+}
+
+int myStackPop(MyStack* obj){
+
+    assert(obj);
+
+    // 检查哪个队列不为空，将不为空的队列的前n-1个数据放入空队列中，再pop掉最后一个数据
+    Queue* empty = &obj->q1;
+    Queue* nonempty = &obj->q2;
+
+    if(!QueueEmpty(&obj->q1)){
+        empty = &obj->q2;
+        nonempty = &obj->q1;
+    }
+
+    while(QueueSize(nonempty) > 1){
+        QueuePush(empty, QueueFront(nonempty));
+        QueuePop(nonempty);
+    }
+
+    int ret = QueueFront(nonempty);
+    QueuePop(nonempty);
+    return ret;
+
+}
+
+int myStackTop(MyStack* obj){
+
+    assert(obj);
+
+    if(!QueueEmpty(&obj->q1)){
+        return QueueBack(&obj->q1);
+    }else{
+        return QueueBack(&obj->q2);
+    }
+
+}
+
+bool myStackEmpty(MyStack* obj){
+
+    assert(obj);
+
+    return QueueEmpty(&obj->q1) && QueueEmpty(&obj->q2);
+
+}
+
+void myStackFree(MyStack* obj){
+
+    QueueDestroy(&obj->q1);
+    QueueDestroy(&obj->q2);
+    free(obj);
+
+}
+
+// void testQueue(){
+
+//     Queue q;
+//     QueueInit(&q);
+//     QueuePush(&q, 1);
+//     QueuePush(&q, 2);
+//     QueuePush(&q, 3);
+//     QueuePush(&q, 4);
+//     QueuePush(&q, 5);
+//     while(!QueueEmpty(&q)){
+//         QDataType front = QueueFront(&q);
+//         printf("%d ", front);
+//         QueuePop(&q); 
+//     }
+
+//     QueueDestroy(&q);
+
+// }
+
+// int main(){
+
+//     testQueue();
+//     return 0;
+
+// }
 
 
