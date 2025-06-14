@@ -996,6 +996,7 @@ int main(){
 */
 
 
+/*
 // practice 8: 用队列实现栈
 #include <stdio.h>
 #include <stdlib.h>
@@ -1212,5 +1213,184 @@ void myStackFree(MyStack* obj){
 //     return 0;
 
 // }
+*/
+
+
+// practice 9: 用栈实现队列
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <stdbool.h>
+
+typedef int STDataType;
+
+typedef struct Stack
+{
+    STDataType* data;
+    int top;
+    int capacity;
+}Stack;
+
+void StackInit(Stack* pst){
+    
+    assert(pst);
+
+    pst->data = NULL;
+    pst->top = 0;
+    pst->capacity = 0;
+
+}
+
+void StackDestroy(Stack* pst){
+
+    assert(pst);
+    free(pst->data);
+    pst->data = NULL;
+    pst->top = pst->capacity = 0;
+
+}
+
+bool StackEmpty(Stack* pst){
+
+    assert(pst);
+
+    return pst->top == 0;
+
+}
+
+void StackPush(Stack* pst, STDataType x){
+
+    assert(pst);
+
+    if(pst->top == pst->capacity){
+        int newcapacity = pst->capacity == 0 ? 4 : pst->capacity * 2;
+        STDataType* s = (STDataType*)realloc(pst->data, sizeof(STDataType)*newcapacity);
+        pst->data = s;
+    }
+
+    pst->data[pst->top] = x;
+    pst->top++;
+
+}
+
+void StackPop(Stack* pst){
+
+    assert(pst);
+    assert(!StackEmpty(pst));
+
+    pst->top--;
+
+}
+
+STDataType StackTop(Stack* pst){
+
+    assert(pst);
+    assert(!StackEmpty(pst));
+
+    return pst->data[pst->top-1];
+
+}
+
+typedef struct 
+{
+    Stack pushST;
+    Stack popST;
+}MyQueue;
+
+void myQueueCreate(){
+
+    MyQueue* pq = (MyQueue*)malloc(sizeof(MyQueue));
+    StackInit(&pq->pushST);
+    StackInit(&pq->popST);
+
+}
+
+void myQueuePush(MyQueue* obj, int x){
+
+    assert(obj);
+
+    StackPush(&obj->pushST, x);
+
+}
+
+int myQueuePop(MyQueue* obj){
+
+    assert(obj);
+
+    if(StackEmpty(&obj->popST)){
+        while(!StackEmpty(&obj->pushST)){
+            StackPush(&obj->popST, StackTop(&obj->pushST));
+            StackPop(&obj->pushST);
+        }
+    }
+    
+
+    int top = StackTop(&obj->popST);
+    StackPop(&obj->popST);
+    return top;
+
+}
+
+int myQueuePeek(MyQueue* obj){
+
+    assert(obj);
+
+    if(StackEmpty(&obj->popST)){
+        while(!StackEmpty(&obj->pushST)){
+            StackPush(&obj->popST, StackTop(&obj->pushST));
+            StackPop(&obj->pushST);
+        }
+    }
+
+    return StackTop(&obj->popST);
+
+}
+
+bool myQueueEmpty(MyQueue* obj){
+
+    assert(obj);
+
+    return StackEmpty(&obj->popST) && StackEmpty(&obj->pushST);
+
+}
+
+void myQueueFree(MyQueue* obj){
+
+    assert(obj);
+
+    StackDestroy(&obj->pushST);
+    StackDestroy(&obj->popST);
+    free(obj);
+
+}
+
+
+// void testStack(){
+
+//     Stack st;
+//     StackInit(&st);
+//     StackPush(&st, 1);
+//     StackPush(&st, 2);
+//     StackPush(&st, 3);
+//     StackPush(&st, 4);
+//     StackPush(&st, 5);
+
+//     while(!StackEmpty(&st)){
+//         STDataType top = StackTop(&st);
+//         printf("%d ", top);
+//         StackPop(&st);
+//     }
+
+//     StackDestroy(&st);
+
+// }
+
+// int main(){
+
+//     testStack();
+//     return 0;
+
+// }
+
 
 
