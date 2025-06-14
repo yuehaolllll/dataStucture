@@ -1393,4 +1393,87 @@ void myQueueFree(MyQueue* obj){
 // }
 
 
+// practice 10: 循环队列（数列方法实现）
+typedef struct
+{
+    int* data;
+    int front;
+    int tail;
+    int k;
+}MyCircularQueue;
+
+MyCircularQueue* myCircularQueueCreate(int k){
+
+    MyCircularQueue* pq = (MyCircularQueue*)malloc(sizeof(MyCircularQueue));
+    pq->data = malloc(sizeof(int)*(k+1));
+    pq->front = 0;
+    pq->tail = 0;
+    pq->k = k;
+
+    return pq;
+
+}
+
+bool myCircularQueueEnQueue(MyCircularQueue* obj, int value){
+
+    if(obj->front == obj->tail){
+        return false;
+    }
+
+    obj->data[obj->tail] = value;
+    obj->tail++;
+    obj->tail %= (obj->k+1);
+
+    return true;
+
+}
+
+bool myCircularQueueDeQueue(MyCircularQueue* obj){
+
+    if(myCircularQueueIsEmpty(obj)){
+        return false;
+    }
+
+    obj->front++;
+    obj->front %= (obj->k+1);
+    return true;
+
+}
+
+int myCircularQueueFront(MyCircularQueue* obj){
+
+    if(myCircularQueueIsEmpty(obj)){
+        return -1;
+    }
+    return obj->data[obj->front];
+
+}
+
+int myCircularQueueRear(MyCircularQueue* obj){
+
+    if(myCircularQueueIsEmpty(obj)){
+        return -1;
+    }
+    return obj->data[(obj->tail + obj->k)%(obj->k + 1)];
+    
+}
+
+bool myCircularQueueIsEmpty(MyCircularQueue* obj){
+
+    return obj->front == obj->tail;
+
+}
+
+bool myCircularQueueIsFull(MyCircularQueue* obj){
+
+    return ((obj->tail+1) % (obj->k+1)) == obj->front;
+
+}
+
+void myCircularQueueFree(MyCircularQueue* obj){
+
+    free(obj->data);
+    free(obj);
+
+}
 
