@@ -1216,264 +1216,369 @@ void myStackFree(MyStack* obj){
 */
 
 
-// practice 9: 用栈实现队列
+// // practice 9: 用栈实现队列
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <assert.h>
+// #include <stdbool.h>
+
+// typedef int STDataType;
+
+// typedef struct Stack
+// {
+//     STDataType* data;
+//     int top;
+//     int capacity;
+// }Stack;
+
+// void StackInit(Stack* pst){
+    
+//     assert(pst);
+
+//     pst->data = NULL;
+//     pst->top = 0;
+//     pst->capacity = 0;
+
+// }
+
+// void StackDestroy(Stack* pst){
+
+//     assert(pst);
+//     free(pst->data);
+//     pst->data = NULL;
+//     pst->top = pst->capacity = 0;
+
+// }
+
+// bool StackEmpty(Stack* pst){
+
+//     assert(pst);
+
+//     return pst->top == 0;
+
+// }
+
+// void StackPush(Stack* pst, STDataType x){
+
+//     assert(pst);
+
+//     if(pst->top == pst->capacity){
+//         int newcapacity = pst->capacity == 0 ? 4 : pst->capacity * 2;
+//         STDataType* s = (STDataType*)realloc(pst->data, sizeof(STDataType)*newcapacity);
+//         pst->data = s;
+//     }
+
+//     pst->data[pst->top] = x;
+//     pst->top++;
+
+// }
+
+// void StackPop(Stack* pst){
+
+//     assert(pst);
+//     assert(!StackEmpty(pst));
+
+//     pst->top--;
+
+// }
+
+// STDataType StackTop(Stack* pst){
+
+//     assert(pst);
+//     assert(!StackEmpty(pst));
+
+//     return pst->data[pst->top-1];
+
+// }
+
+// typedef struct 
+// {
+//     Stack pushST;
+//     Stack popST;
+// }MyQueue;
+
+// void myQueueCreate(){
+
+//     MyQueue* pq = (MyQueue*)malloc(sizeof(MyQueue));
+//     StackInit(&pq->pushST);
+//     StackInit(&pq->popST);
+
+// }
+
+// void myQueuePush(MyQueue* obj, int x){
+
+//     assert(obj);
+
+//     StackPush(&obj->pushST, x);
+
+// }
+
+// int myQueuePop(MyQueue* obj){
+
+//     assert(obj);
+
+//     if(StackEmpty(&obj->popST)){
+//         while(!StackEmpty(&obj->pushST)){
+//             StackPush(&obj->popST, StackTop(&obj->pushST));
+//             StackPop(&obj->pushST);
+//         }
+//     }
+    
+
+//     int top = StackTop(&obj->popST);
+//     StackPop(&obj->popST);
+//     return top;
+
+// }
+
+// int myQueuePeek(MyQueue* obj){
+
+//     assert(obj);
+
+//     if(StackEmpty(&obj->popST)){
+//         while(!StackEmpty(&obj->pushST)){
+//             StackPush(&obj->popST, StackTop(&obj->pushST));
+//             StackPop(&obj->pushST);
+//         }
+//     }
+
+//     return StackTop(&obj->popST);
+
+// }
+
+// bool myQueueEmpty(MyQueue* obj){
+
+//     assert(obj);
+
+//     return StackEmpty(&obj->popST) && StackEmpty(&obj->pushST);
+
+// }
+
+// void myQueueFree(MyQueue* obj){
+
+//     assert(obj);
+
+//     StackDestroy(&obj->pushST);
+//     StackDestroy(&obj->popST);
+//     free(obj);
+
+// }
+
+
+// // void testStack(){
+
+// //     Stack st;
+// //     StackInit(&st);
+// //     StackPush(&st, 1);
+// //     StackPush(&st, 2);
+// //     StackPush(&st, 3);
+// //     StackPush(&st, 4);
+// //     StackPush(&st, 5);
+
+// //     while(!StackEmpty(&st)){
+// //         STDataType top = StackTop(&st);
+// //         printf("%d ", top);
+// //         StackPop(&st);
+// //     }
+
+// //     StackDestroy(&st);
+
+// // }
+
+// // int main(){
+
+// //     testStack();
+// //     return 0;
+
+// // }
+
+
+// // practice 10: 循环队列（数列方法实现）
+// typedef struct
+// {
+//     int* data;
+//     int front;
+//     int tail;
+//     int k;
+// }MyCircularQueue;
+
+// MyCircularQueue* myCircularQueueCreate(int k){
+
+//     MyCircularQueue* pq = (MyCircularQueue*)malloc(sizeof(MyCircularQueue));
+//     pq->data = malloc(sizeof(int)*(k+1));
+//     pq->front = 0;
+//     pq->tail = 0;
+//     pq->k = k;
+
+//     return pq;
+
+// }
+
+// bool myCircularQueueEnQueue(MyCircularQueue* obj, int value){
+
+//     if(obj->front == obj->tail){
+//         return false;
+//     }
+
+//     obj->data[obj->tail] = value;
+//     obj->tail++;
+//     obj->tail %= (obj->k+1);
+
+//     return true;
+
+// }
+
+// bool myCircularQueueDeQueue(MyCircularQueue* obj){
+
+//     if(myCircularQueueIsEmpty(obj)){
+//         return false;
+//     }
+
+//     obj->front++;
+//     obj->front %= (obj->k+1);
+//     return true;
+
+// }
+
+// int myCircularQueueFront(MyCircularQueue* obj){
+
+//     if(myCircularQueueIsEmpty(obj)){
+//         return -1;
+//     }
+//     return obj->data[obj->front];
+
+// }
+
+// int myCircularQueueRear(MyCircularQueue* obj){
+
+//     if(myCircularQueueIsEmpty(obj)){
+//         return -1;
+//     }
+//     return obj->data[(obj->tail + obj->k)%(obj->k + 1)];
+    
+// }
+
+// bool myCircularQueueIsEmpty(MyCircularQueue* obj){
+
+//     return obj->front == obj->tail;
+
+// }
+
+// bool myCircularQueueIsFull(MyCircularQueue* obj){
+
+//     return ((obj->tail+1) % (obj->k+1)) == obj->front;
+
+// }
+
+// void myCircularQueueFree(MyCircularQueue* obj){
+
+//     free(obj->data);
+//     free(obj);
+
+// }
+
+
+// leetcode practice 1: 链表求和
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <stdbool.h>
 
-typedef int STDataType;
+struct ListNode {
+    int val;
+    struct ListNode *next;
+};
+ 
 
-typedef struct Stack
-{
-    STDataType* data;
-    int top;
-    int capacity;
-}Stack;
+struct ListNode* BuyListNode(int x){
+    struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    newNode->val = x;
+    newNode->next = NULL;
 
-void StackInit(Stack* pst){
+    return newNode;
+}
+
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
+    // 创建一个新链表
+    struct ListNode* cur = NULL;
+    struct ListNode* newhead = NULL;
     
-    assert(pst);
+    // l1, l2相加
+    int flag = 0;
+    while(l1 != NULL && l2 != NULL){
 
-    pst->data = NULL;
-    pst->top = 0;
-    pst->capacity = 0;
-
-}
-
-void StackDestroy(Stack* pst){
-
-    assert(pst);
-    free(pst->data);
-    pst->data = NULL;
-    pst->top = pst->capacity = 0;
-
-}
-
-bool StackEmpty(Stack* pst){
-
-    assert(pst);
-
-    return pst->top == 0;
-
-}
-
-void StackPush(Stack* pst, STDataType x){
-
-    assert(pst);
-
-    if(pst->top == pst->capacity){
-        int newcapacity = pst->capacity == 0 ? 4 : pst->capacity * 2;
-        STDataType* s = (STDataType*)realloc(pst->data, sizeof(STDataType)*newcapacity);
-        pst->data = s;
-    }
-
-    pst->data[pst->top] = x;
-    pst->top++;
-
-}
-
-void StackPop(Stack* pst){
-
-    assert(pst);
-    assert(!StackEmpty(pst));
-
-    pst->top--;
-
-}
-
-STDataType StackTop(Stack* pst){
-
-    assert(pst);
-    assert(!StackEmpty(pst));
-
-    return pst->data[pst->top-1];
-
-}
-
-typedef struct 
-{
-    Stack pushST;
-    Stack popST;
-}MyQueue;
-
-void myQueueCreate(){
-
-    MyQueue* pq = (MyQueue*)malloc(sizeof(MyQueue));
-    StackInit(&pq->pushST);
-    StackInit(&pq->popST);
-
-}
-
-void myQueuePush(MyQueue* obj, int x){
-
-    assert(obj);
-
-    StackPush(&obj->pushST, x);
-
-}
-
-int myQueuePop(MyQueue* obj){
-
-    assert(obj);
-
-    if(StackEmpty(&obj->popST)){
-        while(!StackEmpty(&obj->pushST)){
-            StackPush(&obj->popST, StackTop(&obj->pushST));
-            StackPop(&obj->pushST);
+        int ret = l1->val + l2->val + flag;
+        if(ret > 9){
+            ret = ret % 10;
+            if(cur == NULL){
+                cur = newhead = BuyListNode(ret);
+                flag = 1;
+            }else{
+                cur->next = BuyListNode(ret);
+                cur = cur->next;
+                flag = 1;
+            }
+        }else{
+            if(cur == NULL){
+                cur = newhead = BuyListNode(ret);
+                flag = 0;
+            }else{
+                cur->next = BuyListNode(ret);
+                cur = cur->next;
+                flag = 0;
+            }
+            
         }
-    }
-    
 
-    int top = StackTop(&obj->popST);
-    StackPop(&obj->popST);
-    return top;
+        l1 = l1->next;
+        l2 = l2->next;
 
-}
+    } 
 
-int myQueuePeek(MyQueue* obj){
+    // 如果flag仍有进位值
+    if(flag == 1){
+        while(l1 != NULL){
+            int ret = l1->val + flag;
+            if(ret > 9){
+                ret = ret % 10;
+                cur->next = BuyListNode(ret);
+                cur = cur->next;
+                flag = 1;
+            }else{
+                cur->next = BuyListNode(ret);
+                cur = cur->next;
+                flag = 0;
+            }
+            l1 = l1->next;
+        }
 
-    assert(obj);
+        while(l2 != NULL){
+            int ret = l2->val + flag;
+            if(ret > 9){
+                ret = ret % 10;
+                cur->next = BuyListNode(ret);
+                cur = cur->next;
+                flag = 1;
+            }else{
+                cur->next = BuyListNode(ret);
+                cur = cur->next;
+                flag = 0;
+            }
+            l2 = l2->next;
+        }
 
-    if(StackEmpty(&obj->popST)){
-        while(!StackEmpty(&obj->pushST)){
-            StackPush(&obj->popST, StackTop(&obj->pushST));
-            StackPop(&obj->pushST);
+        if(flag == 1){
+            cur->next = BuyListNode(1);
+        }
+
+    }else{
+        if(l1 != NULL){
+            cur->next = l1;
+        }
+        if(l2 != NULL){
+            cur->next = l2;
         }
     }
 
-    return StackTop(&obj->popST);
+    return newhead;
 
 }
-
-bool myQueueEmpty(MyQueue* obj){
-
-    assert(obj);
-
-    return StackEmpty(&obj->popST) && StackEmpty(&obj->pushST);
-
-}
-
-void myQueueFree(MyQueue* obj){
-
-    assert(obj);
-
-    StackDestroy(&obj->pushST);
-    StackDestroy(&obj->popST);
-    free(obj);
-
-}
-
-
-// void testStack(){
-
-//     Stack st;
-//     StackInit(&st);
-//     StackPush(&st, 1);
-//     StackPush(&st, 2);
-//     StackPush(&st, 3);
-//     StackPush(&st, 4);
-//     StackPush(&st, 5);
-
-//     while(!StackEmpty(&st)){
-//         STDataType top = StackTop(&st);
-//         printf("%d ", top);
-//         StackPop(&st);
-//     }
-
-//     StackDestroy(&st);
-
-// }
-
-// int main(){
-
-//     testStack();
-//     return 0;
-
-// }
-
-
-// practice 10: 循环队列（数列方法实现）
-typedef struct
-{
-    int* data;
-    int front;
-    int tail;
-    int k;
-}MyCircularQueue;
-
-MyCircularQueue* myCircularQueueCreate(int k){
-
-    MyCircularQueue* pq = (MyCircularQueue*)malloc(sizeof(MyCircularQueue));
-    pq->data = malloc(sizeof(int)*(k+1));
-    pq->front = 0;
-    pq->tail = 0;
-    pq->k = k;
-
-    return pq;
-
-}
-
-bool myCircularQueueEnQueue(MyCircularQueue* obj, int value){
-
-    if(obj->front == obj->tail){
-        return false;
-    }
-
-    obj->data[obj->tail] = value;
-    obj->tail++;
-    obj->tail %= (obj->k+1);
-
-    return true;
-
-}
-
-bool myCircularQueueDeQueue(MyCircularQueue* obj){
-
-    if(myCircularQueueIsEmpty(obj)){
-        return false;
-    }
-
-    obj->front++;
-    obj->front %= (obj->k+1);
-    return true;
-
-}
-
-int myCircularQueueFront(MyCircularQueue* obj){
-
-    if(myCircularQueueIsEmpty(obj)){
-        return -1;
-    }
-    return obj->data[obj->front];
-
-}
-
-int myCircularQueueRear(MyCircularQueue* obj){
-
-    if(myCircularQueueIsEmpty(obj)){
-        return -1;
-    }
-    return obj->data[(obj->tail + obj->k)%(obj->k + 1)];
-    
-}
-
-bool myCircularQueueIsEmpty(MyCircularQueue* obj){
-
-    return obj->front == obj->tail;
-
-}
-
-bool myCircularQueueIsFull(MyCircularQueue* obj){
-
-    return ((obj->tail+1) % (obj->k+1)) == obj->front;
-
-}
-
-void myCircularQueueFree(MyCircularQueue* obj){
-
-    free(obj->data);
-    free(obj);
-
-}
-
