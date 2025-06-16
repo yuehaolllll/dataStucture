@@ -1478,6 +1478,7 @@ void myStackFree(MyStack* obj){
 // }
 
 
+/*
 // leetcode practice 1: 链表求和
 #include <stdio.h>
 #include <stdlib.h>
@@ -1580,5 +1581,50 @@ struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
     }
 
     return newhead;
+
+}
+*/
+
+
+// leetcode practice 2: 回文数
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+bool isPalindrome(int x) {
+    // 将x的各个位存入数组
+    int capacity = 4;
+    int* data = (int*)malloc(sizeof(int)*capacity);
+    int num = 0;
+    if(x < 0){
+        data[num] = '-';
+        num++;
+    }
+    while(x){
+        if(num == capacity){
+            capacity *= 2;
+            int* newdata = (int*)realloc(data, sizeof(int)*capacity);
+            data = newdata;
+        }
+
+        data[num] = x % 10;
+        x /= 10;
+        num++;
+        
+    }
+
+    // 对比
+    int sz = num;
+    int left = 0;
+    int right = num - 1;
+    while(left < sz){
+        if(data[left] != data[right]){
+            return false;
+        }
+        left++;
+        right--;
+    }
+
+    return true;
 
 }
